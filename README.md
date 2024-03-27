@@ -1,1 +1,1 @@
-# instantsplat.github.io
+### instantsplat.github.io
