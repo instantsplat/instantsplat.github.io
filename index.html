@@ -324,7 +324,6 @@
           <div class="content has-text-justified">
             <img src="./static/images/teaser.png">
             <p>Result on Tanks and Temples Benchmark</p>
-
           </div>
         </div>
       </div>
@@ -336,7 +335,7 @@
 
 
   <section class="section">
-    <div class="container ">
+    <div class="container is-max-desktop ">
       <div class=" has-text-centered">
         <h2 class="title is-3">Visual Comparisons</h2>
         <div class="content has-text-justified">
@@ -353,17 +352,17 @@
                   <div id="example1" class="bal-container-small">
 
                     <div class="bal-after">
-                      <img src="./static/images/bicycle_our.png">
+                      <img src="./static/images/comparison/Barn/0003_instant.png">
                       <div class="bal-afterPosition afterLabel" style="z-index:1;">
                         Ours
                       </div>
                     </div>
 
                     <div class="bal-before" style="width:96.4968152866242%;">
-                      <div class="bal-before-inset" style="width: 539px;">
-                        <img src="./static/images/bicycle_3dgs.png">
+                      <div class="bal-before-inset" style="width: 512px;">
+                        <img src="./static/images/comparison/Barn/0003_cf.png">
                         <div class="bal-beforePosition beforeLabel">
-                          3d-gs [Kerbl 2023]
+                          colmap-free 3dgs [Fu 2023]
                         </div>
                       </div>
                     </div>
@@ -379,17 +378,17 @@
                   <div id="example2" class="bal-container-small">
 
                     <div class="bal-after">
-                      <img src="./static/images/garden_our.png">
+                      <img src="./static/images/comparison/Family/0006_instant.png">
                       <div class="bal-afterPosition afterLabel">
                         Ours
                       </div>
                     </div>
 
                     <div class="bal-before" style="width: 50%;">
-                      <div class="bal-before-inset" style="width: 539px;">
-                        <img src="./static/images/garden_vqdvgo.png">
+                      <div class="bal-before-inset" style="width: 512px;">
+                        <img src="./static/images/comparison/Family/0006_nopenerf.png">
                         <div class="bal-beforePosition beforeLabel">
-                          VQDVGO [Li 2022]
+                          Nope-Nerf [Bian 2022]
                         </div>
                       </div>
                     </div>
@@ -415,17 +414,17 @@
 
                 <div id="example4" class="bal-container-small">
                   <div class="bal-after">
-                    <img src="./static/images/counter_our.png">
+                    <img src="./static/images/comparison/Bicycle/0005_instant.png">
                     <div class="bal-afterPosition afterLabel" style="z-index:1;">
                       Ours
                     </div>
                   </div>
 
                   <div class="bal-before" style="width:62.10191082802548%;">
-                    <div class="bal-before-inset" style="width: 539px;">
-                      <img src="./static/images/counter_3dgs.png">
+                    <div class="bal-before-inset" style="width: 512px;">
+                      <img src="./static/images/comparison/Bicycle/0005_cf.png">
                       <div class="bal-beforePosition beforeLabel">
-                        3d-gs [Kerbl 2023]
+                        colmap-free 3DGS [Fu 2023]
                       </div>
                     </div>
                   </div>
@@ -439,17 +438,17 @@
 
                 <div id="example5" class="bal-container-small">
                   <div class="bal-after">
-                    <img src="./static/images/stump_our.png">
+                    <img src="./static/images/comparison/Car/0006_instant.png">
                     <div class="bal-afterPosition afterLabel" style="z-index:1;">
                       Ours
                     </div>
                   </div>
 
                   <div class="bal-before" style="width:56.77179962894249%;">
-                    <div class="bal-before-inset" style="width: 628px;">
+                    <div class="bal-before-inset" style="width: 512px;">
                       <img src="./static/images/stump_vqdvgo.png">
                       <div class="bal-beforePosition beforeLabel">
-                        VQDVGO [Li 2022]
+                        NeRF--_todo [Li 2022]
                       </div>
                     </div>
                   </div>
@@ -465,6 +464,8 @@
           </div>
         </div>
       </div>
+
+      
     </div>
   </section>
 
@@ -481,6 +482,10 @@
     new BeforeAfter({
       id: '#example5'
     });
+    // new BeforeAfter({
+    //     id: '#example6'
+    // });
+
 
   </script>
 
