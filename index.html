@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="LightGaussian efficiently compresses 3D scene data, enhancing performance and reducing storage needs while preserving visual quality.">
+  <meta name="keywords" content="LightGaussian, lightgaussian, Gaussian Splatting, Gaussian">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LightGaussian: Unbounded 3D Gaussian Compression
+    with 15x Reduction and 200+ FPS</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <!-- <link rel="icon" href="./static/images/favicon.svg"> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="./static/js/script.js"></script>
+
+</head>
+
+<body>
+
+  <!-- <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav> -->
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title"><span style="color: #27ae60;font-weight: bolder;">L</span>ight<span style="color: #27ae60;font-weight: bolder;">G</span>aussian: Unbounded 3D Gaussian Compression
+              with 15x Reduction and 200+ FPS</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://zhiwenfan.github.io/">Zhiwen Fan</a><sup>1</sup><sup>*</sup>,</span>
+              <span class="author-block">
+                <a href="https://github.com/Kevin-2017">Kevin Wang</a><sup>1</sup><sup>*</sup>,</span>
+              <span class="author-block">
+                <a href="https://github.com/kairunwen">Kairun Wen</a><sup>2</sup>,</span>
+              <span class="author-block">
+                <a href="https://zehaozhu.github.io/">Zehao Zhu</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a href="https://ir1d.github.io/">Dejia Xu</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a href="https://express.adobe.com/page/CAdrFMJ9QeI2y/">Zhangyang Wang</a><sup>1</sup>
+
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>The University of Texas at Austin</span>
+              <span class="author-block"><sup>2</sup>Xiamen University</span> <br>
+              <span class="author-block"><sup>*</sup>denotes equal contribution</span>
+            </div>
+            <!-- TODO: update paper and video link once upload -->
+            <div class="column has-text-centered">
+              <!-- <div class="publication-links"> -->
+                <!-- PDF Link. -->
+                <span class="link-block">
+                <a href="https://arxiv.org/pdf/2311.17245.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+                </span>
+                <span class="link-block">
+                <a href="https://arxiv.org/abs/2311.17245"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+                <!-- Video Link. -->
+                <span class="link-block">
+                  <a href="https://youtu.be/470hul75bSM" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                    </span>
+                    <span>Video</span>
+                  </a>
+                </span>
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="https://github.com/VITA-Group/LightGaussian"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- <section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/teaser.mp4"
+                type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">Nerfies</span> turns selfie videos from your phone into
+        free-viewpoint
+        portraits.
+      </h2>
+    </div>
+  </div>
+</section> -->
+
+
+  <section class="hero is-light is-small">
+    <div class="hero-body">
+      <div class="container">
+        <div id="results-carousel" class=" carousel results-carousel">
+          <div class="item item-room">
+            <video poster="" id="room" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/room_video_comp3.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+  
+          <div class="item item-garden">
+            <video poster="" id="garden" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/garden_video_comp3.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-bicycle">
+            <video poster="" id="bicycle" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/bicycle_video_comp3.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-bonsai">
+            <video poster="" id="bonsai" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/bonsai_video_comp3.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-counter">
+            <video poster="" id="counter" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/counter_video_comp3.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-kitchen">
+            <video poster="" id="kitchen" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/kitchen_video_comp3.mp4" type="video/mp4">
+            </video>
+          </div>
+        <div class="item item-train">
+          <video poster="" id="train" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/train_video_comp3.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-struck">
+          <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/truck_video_comp3.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-stump">
+          <video poster="" id="stump" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/stump_video_comp3.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        </div>
+        <p>The caption displays both the file size and the Structural Similarity Index (SSIM)</p>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Overview</h2>
+          <div class="content has-text-justified">
+
+            <p>
+              Recent advancements in real-time neural rendering using point-based techniques have paved the way for the
+              widespread adoption of 3D representations. However, foundational approaches like 3D Gaussian Splatting
+              come with
+              a substantial storage overhead caused by growing the SfM points to millions, often demanding
+              gigabyte-level disk
+              space for a single unbounded scene, posing significant scalability challenges and hindering the splatting
+              efficiency.
+            </p>
+            <p>
+              To address this challenge, we introduce LightGaussian, a novel method designed to transform 3D Gaussians
+              into
+              a more efficient and compact format. Drawing inspiration from the concept of Network Pruning,
+              <b>LightGaussian</b>
+              identifies Gaussians that are insignificant in contributing to the scene reconstruction and adopts a
+              pruning and
+              recovery process, effectively reducing redundancy in Gaussian counts while preserving visual effects.
+              Additionally,
+              LightGaussian employs distillation and pseudo-view augmentation to distill spherical harmonics to a lower
+              degree,
+              allowing knowledge transfer to more compact representations while maintaining scene appearance. Furthermore, we
+              propose
+              a hybrid scheme, VecTree Quantization, to quantize all attributes, resulting in lower bitwidth
+              representations with minimal accuracy losses.
+            </p>
+            <p>
+              In summary, LightGaussian achieves an averaged compression rate over 15× while boosting the FPS from 139
+              to 215,
+              enabling an efficient representation of complex scenes on Mip-NeRF 360, Tank & Temple datasets.
+            </p>
+            <p>Some sections of the code are publicly accessible, and the complete code will be made available soon :)</p>
+
+          </div>
+        </div>
+      </div>
+      <!--/ Abstract. -->
+
+      <!-- Paper video. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Video</h2>
+          <div class="publication-video">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/470hul75bSM?si=7F9NL8zWbU9GtqHb"
+              title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; 
+           encrypted-media; " allowfullscreen></iframe>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Concurrent Work. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Method Overview</h2>
+          <div class="content has-text-justified">
+            <img src="./static/images/method.png">
+
+            <p>The overview of LightGaussian is illustrated above. The 3D-GS model is trained
+              using multi-view images and is initially initialized from SfM point clouds. By expanding the sparse points
+              to millions of Gaussians, the scene is well-represented. Then, the 3D-GS undergoes processing within our
+              pipeline to transform it into a more compact format. This involves utilizing <em>Gaussian Prune and
+                Recovery</em> to reduce the number of Gaussians, <em>SH Distillation</em> to remove redundant SHs while
+              preserving the modeled specular light, and <em>VecTree Quantization</em> to store Gaussians at a lower
+              bit-width.</p>
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+      <!--/ Concurrent Work. -->
+
+    </div>
+  </section>
+
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Result</h2>
+          <div class="content has-text-justified">
+            <img src="./static/images/teaser.png">
+            <p>Result on Mip-NeRF 360 datasets</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+  <section class="section">
+    <div class="container ">
+      <div class=" has-text-centered">
+        <h2 class="title is-3">Visual Comparisons</h2>
+        <div class="content has-text-justified">
+          <p>
+
+          </p>
+        </div>
+        <div class="columns is-centered">
+          <!-- Visual Effects. -->
+          <div class="column">
+            <div class="content">
+              <div class="columns is-centered">
+                <div class="column is-full-width">
+                  <div id="example1" class="bal-container-small">
+
+                    <div class="bal-after">
+                      <img src="./static/images/bicycle_our.png">
+                      <div class="bal-afterPosition afterLabel" style="z-index:1;">
+                        Ours
+                      </div>
+                    </div>
+
+                    <div class="bal-before" style="width:96.4968152866242%;">
+                      <div class="bal-before-inset" style="width: 539px;">
+                        <img src="./static/images/bicycle_3dgs.png">
+                        <div class="bal-beforePosition beforeLabel">
+                          3d-gs [Kerbl 2023]
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="bal-handle" style="left:96.4968152866242%;">
+                      <span class=" handle-left-arrow"></span>
+                      <span class="handle-right-arrow"></span>
+                    </div>
+
+                  </div>
+
+
+                  <div id="example2" class="bal-container-small">
+
+                    <div class="bal-after">
+                      <img src="./static/images/garden_our.png">
+                      <div class="bal-afterPosition afterLabel">
+                        Ours
+                      </div>
+                    </div>
+
+                    <div class="bal-before" style="width: 50%;">
+                      <div class="bal-before-inset" style="width: 539px;">
+                        <img src="./static/images/garden_vqdvgo.png">
+                        <div class="bal-beforePosition beforeLabel">
+                          VQDVGO [Li 2022]
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="bal-handle" style="left: 50%;">
+                      <span class=" handle-left-arrow"></span>
+                      <span class="handle-right-arrow"></span>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <!--/ Visual Effects. -->
+
+          <!-- Matting. -->
+          <div class="column">
+            <div class="columns is-centered">
+              <div class="column content">
+
+                <div id="example4" class="bal-container-small">
+                  <div class="bal-after">
+                    <img src="./static/images/counter_our.png">
+                    <div class="bal-afterPosition afterLabel" style="z-index:1;">
+                      Ours
+                    </div>
+                  </div>
+
+                  <div class="bal-before" style="width:62.10191082802548%;">
+                    <div class="bal-before-inset" style="width: 539px;">
+                      <img src="./static/images/counter_3dgs.png">
+                      <div class="bal-beforePosition beforeLabel">
+                        3d-gs [Kerbl 2023]
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bal-handle" style="left:62.10191082802548%;">
+                    <span class=" handle-left-arrow"></span>
+                    <span class="handle-right-arrow"></span>
+                  </div>
+
+                </div>
+
+                <div id="example5" class="bal-container-small">
+                  <div class="bal-after">
+                    <img src="./static/images/stump_our.png">
+                    <div class="bal-afterPosition afterLabel" style="z-index:1;">
+                      Ours
+                    </div>
+                  </div>
+
+                  <div class="bal-before" style="width:56.77179962894249%;">
+                    <div class="bal-before-inset" style="width: 628px;">
+                      <img src="./static/images/stump_vqdvgo.png">
+                      <div class="bal-beforePosition beforeLabel">
+                        VQDVGO [Li 2022]
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bal-handle" style="left:56.77179962894249%;">
+                    <span class=" handle-left-arrow"></span>
+                    <span class="handle-right-arrow"></span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    new BeforeAfter({
+      id: '#example1'
+    });
+    new BeforeAfter({
+      id: '#example2'
+    });
+    new BeforeAfter({
+      id: '#example4'
+    });
+    new BeforeAfter({
+      id: '#example5'
+    });
+
+  </script>
+
+  <!-- 
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Related Links</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            Needs update
+          </p>
+         
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section> -->
+
+  
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@misc{fan2023lightgaussian,
+  author    = {Zhiwen Fan and Kevin Wang and Kairun Wen and Zehao Zhu and Dejia Xu and Zhangyang Wang},
+  title     = {LightGaussian: Unbounded 3D Gaussian Compression with 15x Reduction and 200+ FPS},
+  year      ={2023}, 
+  eprint    ={2311.17245}, 
+  archivePrefix={arXiv}, 
+  primaryClass={cs.CV},
+}</code></pre>
+  </div>
+</section>
+
+  <!-- TODO: update the arxiv link and github -->
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <a class="icon-link" href="./static/videos/nerfies_paper.pdf">
+          <i class="fas fa-file-pdf"></i>
+        </a>
+        <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              This means you are free to borrow the <a href="https://github.com/nerfies/nerfies.github.io">source
+                code</a> of this website,
+              we just ask that you link back to this page in the footer.
+              Please remember to remove the analytics code included in the header of the website which
+              you do not want on your website.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
