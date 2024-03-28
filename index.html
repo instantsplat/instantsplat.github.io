@@ -91,14 +91,10 @@
             <h1 class="title is-1 publication-title"><span style="color: #4CAF50 ;font-weight: bolder;">Instant</span>Splat: Unbounded Sparse-view             Pose-free Gaussian Splatting in 40 Seconds</h1>
             <div class="is-size-5 publication-authors">
               <span class="author-block">
-                <a href="https://zhiwenfan.github.io/">Anonymous Authors</a><sup>1</sup><sup>*</sup>,</span>
+                <a href="">Anonymous Authors</a><sup>1</sup><sup>*</sup>,</span>
             </div>
 
-            <div class="is-size-5 publication-authors">
-              <span class="author-block"><sup>1</sup>The University of Texas at Austin</span>
-              <span class="author-block"><sup>2</sup>Xiamen University</span> <br>
-              <span class="author-block"><sup>*</sup>denotes equal contribution</span>
-            </div>
+
             <div class="column has-text-centered">
                 <span class="link-block">
                 <a href=""
@@ -138,82 +134,8 @@
     </div>
   </section>
 
-  <!-- <section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <video id="teaser" autoplay muted loop playsinline height="100%">
-        <source src="./static/videos/teaser.mp4"
-                type="video/mp4">
-      </video>
-      <h2 class="subtitle has-text-centered">
-        <span class="dnerf">Nerfies</span> turns selfie videos from your phone into
-        free-viewpoint
-        portraits.
-      </h2>
-    </div>
-  </div>
-</section> -->
 
 
-  <!-- <section class="hero is-light is-small">
-    <div class="hero-body">
-      <div class="container">
-        <div id="results-carousel" class=" carousel results-carousel">
-          <div class="item item-room">
-            <video poster="" id="room" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/videos/room_video_comp3.mp4"
-                      type="video/mp4">
-            </video>
-          </div>
-  
-          <div class="item item-garden">
-            <video poster="" id="garden" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/videos/garden_video_comp3.mp4" type="video/mp4">
-            </video>
-          </div>
-          <div class="item item-bicycle">
-            <video poster="" id="bicycle" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/videos/bicycle_video_comp3.mp4" type="video/mp4">
-            </video>
-          </div>
-          <div class="item item-bonsai">
-            <video poster="" id="bonsai" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/videos/bonsai_video_comp3.mp4" type="video/mp4">
-            </video>
-          </div>
-          <div class="item item-counter">
-            <video poster="" id="counter" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/videos/counter_video_comp3.mp4" type="video/mp4">
-            </video>
-          </div>
-          <div class="item item-kitchen">
-            <video poster="" id="kitchen" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/videos/kitchen_video_comp3.mp4" type="video/mp4">
-            </video>
-          </div>
-        <div class="item item-train">
-          <video poster="" id="train" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/train_video_comp3.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-struck">
-          <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/truck_video_comp3.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-stump">
-          <video poster="" id="stump" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/stump_video_comp3.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        </div>
-        <p>The caption displays both the file size and the Structural Similarity Index (SSIM)</p>
-      </div>
-    </div>
-  </section> -->
 
 
   <section class="section">
@@ -248,8 +170,10 @@
       <!--/ Abstract. -->
       <div class="column is-four-fifths"></div>
           <h2 class="title is-3">Video</h2>
-          <video autoplay muted class="publication-video">
-            <source src="movie.mp4" type="video/mp4">
+          <video controls>
+            <!-- TODO replace the place holder video with the correct video and delete the plaveholder video from folder -->
+            <source src="static/videos/placeholder.mp4" type="video/mp4">
+            Your browser does not support the video.
           </video>
       </div>
     </div>
@@ -292,13 +216,14 @@
             <img src="./static/images/teaser.png">
             <p>Result on Tanks and Temples Benchmark</p>
           </div>
+          <div class="content has-text-justified">
+            <img src="./static/images/cfgs_vs_ours.png">
+            <p>We study the impact of the training view number to the rendering quality. Comparisons are between our model and CF-3DGS, on the Tanks and Temples dataset</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
-
-
-
 
 
   <section class="section">
