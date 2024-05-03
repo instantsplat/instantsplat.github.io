@@ -100,7 +100,7 @@
           <div class="column has-text-centered">
             <h1 class="title is-1 publication-title"><span
                 style="color: #4CAF50 ;font-weight: bolder;">InstantSplat</span>: Unbounded Sparse-view Pose-free
-              Gaussian Splatting in 40 Seconds</h1>
+              Gaussian Splatting in 10 Seconds</h1>
             <div class="is-size-5 publication-authors">
               <span class="author-block">
                 <a href="https://zhiwenfan.github.io/">Zhiwen Fan</a><sup>1,2</sup><sup>*</sup>,</span>
@@ -290,32 +290,12 @@
           <div class="content has-text-justified">
 
             <p>
-              While novel view synthesis (NVS) has made substantial progress in 3D computer vision, it typically
-              requires an initial estimation of camera intrinsics and extrinsics from dense viewpoints. This
-              pre-processing is usually conducted via a Structure-from-Motion (SfM) pipeline, a procedure that can be
-              slow and unreliable, particularly in sparse-view scenarios with insufficient matched features for accurate
-              reconstruction.
-              In this work, we integrate the strengths of point-based representations (e.g., 3D Gaussian Splatting,
-              3D-GS) with end-to-end dense stereo models (DUSt3R) to tackle the complex yet unresolved issues in NVS
-              under unconstrained settings, which encompasses <u>pose-free & sparse view challenges</u>.
+              While novel view synthesis (NVS) has made substantial progress in 3D computer vision, it necessitates an accurate estimation of camera intrinsics and extrinsics from dense viewpoints. This pre-processing is usually conducted via a Structure-from-Motion (SfM) pipeline, a procedure that can be slow and unreliable, particularly in sparse-view scenarios with insufficient matched features for accurate reconstruction. In this work, we integrate the strengths of point-based representations with end-to-end dense stereo models to address the complex yet unresolved issues in NVS under unconstrained settings, which encompasses <u>pose-free and sparse view challenges</u>.
             </p>
             <p>
-              Our framework, <strong>InstantSplat</strong>, unifies dense stereo priors with 3D-GS to build 3D Gaussians
-              of large-scale scenes
-              from sparse-view & pose-free images in less than 1 minute. Specifically, InstantSplat comprises a Coarse
-              Geometric
-              Initialization (CGI) module that swiftly establishes a preliminary scene structure and camera parameters
-              across all
-              training views, utilizing globally-aligned 3D point maps derived from a pre-trained dense stereo pipeline.
-              This is
-              followed by the Fast 3D-Gaussian Optimization (F-3DGO) module, which jointly optimizes the 3D Gaussian
-              attributes and
-              the initialized poses with pose regularization.
-              Experiments conducted on the large-scale outdoor Tanks \& Temples datasets demonstrate that InstantSplat
-              significantly
-              improves SSIM (by 32%) while concurrently reducing Absolute Trajectory Error (ATE) by 80%. These establish
-              InstantSplat as a viable solution for scenarios involving pose-free and sparse-view conditions.
-
+              Our framework, <strong>InstantSplat</strong>, unifies dense stereo priors and Gaussian Splatting to build 3D Gaussians of large-scale scenes in less than one minute. Specifically, InstantSplat establishes a coarse but dense scene structure across all training views and resolves the initial camera parameters via fast solvers. However, the initialized dense points lead to excessive Gaussian number with a sub-optimal scene representation and degraded pose accuracy, resulting in inferior rendering quality. We first propose a KNN-based point downsampling by measuring the scene scale and view count, then we leverage a joint optimization framework to refine the 3D Gaussians and camera
+              parameters, incorporating a confidence-aware view regularization to ensure the optimization does not diverge or converge towards an erroneous solution. We achieve a significant reduction in training time, from hours to seconds, by presenting the first framework initialized with noise yet well-covered input and a rapid joint optimization. We demonstrate that InstantSplat performs robustly across various numbers of views on benchmarks and achieves high-resolution and photo-realistic rendering of scenes collected from the
+              Perseverance rover using stereo navigation cameras.
             </p>
 
 
