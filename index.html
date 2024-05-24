@@ -233,6 +233,18 @@
                       type="video/mp4">
             </video>
           </div>          
+          <div class="item item-horse">
+            <video poster="" id="horse" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/Horse_3_view.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-barn">
+            <video poster="" id="barn" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/barn.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
           <div class="item item-ignatius">
             <video poster="" id="ignatius" autoplay controls muted loop playsinline height="100%">
               <source src="./static/videos/ignatius.mp4"
@@ -257,20 +269,39 @@
                       type="video/mp4">
             </video>
           </div>
-          <div class="item item-barn">
-            <video poster="" id="barn" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/videos/barn.mp4"
+
+          <div class="item item-Mars0">
+            <video poster="" id="horse" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/Mars_0.mp4"
                       type="video/mp4">
             </video>
           </div>
-          <div class="item item-horse">
+          <div class="item item-Mars1">
             <video poster="" id="horse" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/videos/Horse_3_view.mp4"
+              <source src="./static/videos/Mars_1.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-sora3">
+            <video poster="" id="horse" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/sora_2.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-sora2">
+            <video poster="" id="horse" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/sora_3.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-sora1">
+            <video poster="" id="horse" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/sora_1.mp4"
                       type="video/mp4">
             </video>
           </div>
         </div>
-        <p>The results shown are derived from <strong>3 training views</strong> . Our method estimates poses, which are then interpolated to render the video.</p>
+        <p>The results shown are derived from <strong>3 training views</strong>. Our method estimates poses, which are then interpolated to render the video.</p>
       </div>
     </div>
   </section>
@@ -327,17 +358,12 @@
         <div class="column is-full-width">
           <h2 class="title is-3">Method Overview</h2>
           <div class="content has-text-justified">
-            <img src="./static/images/method.png">
+            <img src="./static/images/arc.png">
 
-            <p>An illustrative overview of our method above, we introduce a new pipeline that incorporates DUSt3R as a
-              3D prior model, providing globally aligned
-              initial scene geometry for 3D Gaussians. This allows for the subsequent calculation of camera poses and
-              intrinsics from
-              the dense point maps, which are then jointly optimized with all other 3D Gaussian attributes. The
-              supervision signals
-              are derived backward from the photometric discrepancies between the rendered images via splatting and the
-              ground-truth
-              images.</p>
+            <p><strong>Overall Framework of InstantSplat</strong>. Beginning with sparse, unposed images, we generate a pixel-wise multi-view stereo dense point cloud utilizing
+              an off-the-shelf model along with computed initial camera poses. We conduct Adaptive Dense Surface Initialization employing a voxel-wise, confidence-aware
+              point downsampler to minimize redundancy and achieve uniform sampling. A streamlined Joint Optimization process without ADC is then implemented to
+              adjust the Gaussian and camera parameters, ensuring consistency across multi-view images. All these processes are executed in a matter of seconds.</p>
 
           </div>
         </div>
@@ -355,14 +381,14 @@
         <div class="column is-full-width">
           <h2 class="title is-3">Result</h2>
           <div class="content has-text-justified">
-            <img src="./static/images/teaser_1.png">
+            <img src="./static/images/teaser_.png">
             <p>Result on Tanks and Temples Benchmark</p>
           </div>
-          <div class="content has-text-justified">
+          <!-- <div class="content has-text-justified">
             <img src="./static/images/cfgs_vs_ours.png">
             <p>We study the impact of the training view number to the rendering quality. Comparisons are between our
               model and CF-3DGS, on the Tanks and Temples dataset</p>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
