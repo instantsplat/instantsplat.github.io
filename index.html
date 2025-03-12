@@ -17,7 +17,7 @@
     content="InstantSplat, unifies dense stereo priors with 3D-GS to build 3D Gaussians of large-scale scenes from sparse-view and pose-free images in less than 1 minute. ">
   <meta name="keywords" content="Instantsplat, Gaussian Splatting, Gaussian, LightGaussian">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>InstantSplat: Sparse-view SfM-free Gaussian Splatting in Seconds
+  <title>InstantSplat: Sparse-view Gaussian Splatting in Seconds
   </title>
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -99,7 +99,7 @@
         <div class="columns is-centered">
           <div class="column has-text-centered">
             <h1 class="title is-1 publication-title"><span
-                style="color: #4CAF50 ;font-weight: bolder;">InstantSplat</span>: Sparse-view SfM-free Gaussian Splatting in Seconds</h1>
+                style="color: #4CAF50 ;font-weight: bolder;">InstantSplat</span>: Sparse-view Gaussian Splatting in Seconds</h1>
             <div class="is-size-5 publication-authors">
               <span class="author-block">  
                 <a href="https://zhiwenfan.github.io/">Zhiwen Fan</a><sup>1,2</sup><sup>*&dagger;</sup>,</span>
@@ -332,7 +332,10 @@
               Our framework, <strong>InstantSplat</strong>, integrates dense stereo predictions with point-based representations to construct 3D Gaussians of large-scale scenes from sparse-view data within seconds. Specifically, InstantSplat generates densely populated surface points across all training views and determines the initial camera parameters using pixel-aligned points. Nonetheless, the non-uniform distribution of initial points from all pixels results in an excessive number of Gaussians,  ielding a sub-optimal scene representation that compromises rendering speed and quality. To address this issue, we employ a highly efficient grid-based, confidence-aware Farthest Point Sampling to strategically position point primitives at representative locations in parallel. Having the uniformly sampled surface points, we can initialize densely covered Gaussians and adopt a streamlined optimization framework to adapt the camera parameters and attributes of 3D Gaussians efficiently, instead of utilizing the complex Adaptive Density Control with manually tuned hyperparameters in 3D-GS. InstantSplat achieves a substantial reduction in training time, from <u></u>hours to mere seconds</u>, and demonstrates robust performance across various numbers of views in diverse datasets.
             </p> -->
             <p>
-              While neural 3D reconstruction has advanced substantially, it typically requires densely captured multi-view data with carefully initialized poses (e.g., using COLMAP). However, this requirement limits its broader applicability, as Structure-from-Motion (SfM) is often unreliable in sparse-view scenarios where feature matches are limited, resulting in cumulative errors. In this paper, we introduce <strong>InstantSplat</strong>, a novel and lightning-fast neural reconstruction system that builds accurate 3D representations from as few as 2-3 images. InstantSplat adopts a self-supervised framework that bridges the gap between 2D images and 3D representations using Gaussian Bundle Adjustment (GauBA) and can be optimized in an end-to-end manner. InstantSplat integrates dense stereo priors and co-visibility relationships between frames to initialize pixel-aligned geometry by progressively expanding the scene avoiding redundancy. Gaussian Bundle Adjustment is used to adapt both the scene representation and camera parameters quickly by minimizing gradient-based photometric error. Overall, InstantSplat achieves large-scale 3D reconstruction in mere seconds by reducing the required number of input views, and is compatible with multiple 3D representations (3D-GS, Mip-Splatting). It achieves an acceleration of over 20 times in reconstruction, improves visual quality (SSIM) from 0.3755 to 0.7624 than COLMAP with 3D-GS.
+              While neural 3D reconstruction has advanced substantially, its performance significantly degrades with sparse-view data, which limits its broader applicability, since SfM is often unreliable in sparse-view scenarios where feature matches are scarce.
+              In this paper, we introduce <strong>InstantSplat</strong>, a novel approach for addressing sparse-view 3D scene reconstruction at lightning-fast speed. InstantSplat employs a self-supervised framework that optimizes 3D scene representation and camera poses by unprojecting 2D pixels into 3D space and aligning them using differentiable neural rendering. The optimization process is initialized with a large-scale trained geometric foundation model, which provides dense priors that yield initial points through model inference, after which we further optimize all scene parameters using photometric errors.
+              To mitigate redundancy introduced by the prior model, we propose a co-visibility-based geometry initialization, and a Gaussian-based bundle adjustment is employed to rapidly adapt both the scene representation and camera parameters without relying on a complex adaptive density control process.
+              Overall, InstantSplat is compatible with multiple point-based representations for view synthesis and surface reconstruction. It achieves an acceleration of over 30 times in reconstruction and improves visual quality (SSIM) from 0.3755 to 0.7624 compared to traditional SfM with 3D-GS.
             </p>
 
 
@@ -370,7 +373,9 @@
             <img src="./static/images/arc_v2.png">
             <!-- <img src="./static/images/arc.png"> -->
 
-            <p><strong>Overall Framework of InstantSplat</strong>. Unlike the modular COLMAP pipeline with Gaussian Splatting, which relies on time-consuming and accuracy-sensitive ADC processes within 3D-GS, and accurate camera poses and sparse point clouds from SfM, InstantSplat employs a deep model to initialize dense surface points. It adopts an end-to-end framework that iteratively optimizes both 3D representation and camera poses, enhancing efficiency and robustness.</p>
+            <p>
+              <strong>Overall Framework</strong>. InstantSplat synergizes the geometry priors from the pre-trained MASt3R model and utilizes Gaussian Splatting to jointly optimize camera parameters and the 3D scenes.
+            </p>
             <!-- <p><strong>Overall Framework of InstantSplat</strong>. Beginning with sparse, unposed images, we generate a pixel-wise multi-view stereo dense point cloud utilizing
               an off-the-shelf model along with computed initial camera poses. We conduct Adaptive Dense Surface Initialization employing a voxel-wise, confidence-aware
               point downsampler to minimize redundancy and achieve uniform sampling. A streamlined Joint Optimization process without ADC is then implemented to
@@ -393,7 +398,7 @@
           <h2 class="title is-3">Result</h2>
           <div class="content has-text-justified">
             <img src="./static/images/teaser_v5.png">
-            <p>InstantSplat processes sparse-view, unposed images to reconstruct an radiance field, capturing detailed scenes rapidly without relying on SfM. Optimization occurs under self-supervision with the support of the large pretrained model, MASt3R.</p>
+            <p><strong>InstantSplat</strong> rapidly reconstructs a dense 3D model from sparse-view images. Instead of relying on traditional Structure-from-Motion poses and the complex adaptive density control strategy of 3D-GS, which is fragile under sparse-view conditions, we propose to synergize the geometric foundation model (i.e., MASt3R) for dense yet less accurate initialization along with a fast alignment step to jointly optimize camera poses and the 3D scenes. It supports various 3D representations, including <strong>2D-GS</strong>, <strong>3D-GS</strong>, and <strong>Mip-Splatting</strong>.</p>
           </div>
           <!-- <div class="content has-text-justified">
             <img src="./static/images/cfgs_vs_ours.png">
@@ -743,8 +748,8 @@
     <div class="container is-max-desktop content">
       <h2 class="title">BibTeX</h2>
       <pre><code>@misc{fan2024instantsplat,
-        title={InstantSplat: Unbounded Sparse-view Pose-free Gaussian Splatting in 40 Seconds}, 
-        author={Zhiwen Fan and Wenyan Cong and Kairun Wen and Kevin Wang and Jian Zhang and Xinghao Ding and Danfei Xu and Boris Ivanovic and Marco Pavone and Georgios Pavlakos and Zhangyang Wang and Yue Wang},
+        title={InstantSplat: Sparse-view Gaussian Splatting in Seconds}, 
+        author={Zhiwen Fan and Kairun Wen and Wenyan Cong and Kevin Wang and Jian Zhang and Xinghao Ding and Danfei Xu and Boris Ivanovic and Marco Pavone and Georgios Pavlakos and Zhangyang Wang and Yue Wang},
         year={2024},
         eprint={2403.20309},
         archivePrefix={arXiv},
